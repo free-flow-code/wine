@@ -41,7 +41,7 @@ def get_products():
     return sorted_products
 
 
-def calculate_time():
+def counting_years_from_founding():
     foundation_year = 1920
     year_now = datetime.datetime.now()
     return year_now.year - foundation_year
@@ -59,7 +59,7 @@ def calculate_word(worktime):
         return 'лет'
 
 
-worktime = calculate_time()
+worktime = counting_years_from_founding()
 year_word = calculate_word(worktime)
 
 rendered_page = template.render(
