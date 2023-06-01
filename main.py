@@ -1,5 +1,7 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from collections import defaultdict
+from dotenv import load_dotenv
+import os
 import datetime
 import pandas
 import pprint
@@ -14,8 +16,8 @@ env = Environment(
 template = env.get_template('template.html')
 
 
-def get_products():
-    products_df = pandas.read_excel('wine.xlsx', na_values='nan', keep_default_na=False)
+def get_products(table_filename):
+    products_df = pandas.read_excel(table_filename, na_values='nan', keep_default_na=False)
     products_df.rename(columns={
         'Категория': 'category',
         'Название': 'title',
@@ -61,15 +63,17 @@ def calculate_word(worktime):
 
 worktime = counting_years_from_founding()
 year_word = calculate_word(worktime)
+table_filename = os.getenv('TABLE_FILENAME', default='wine-example.xlsx')
 
 rendered_page = template.render(
-    products=get_products(),
+    products=get_products(table_filename),
     worktime=worktime,
     year_word=year_word
 )
 
 
 def main():
+    load_dotenv()
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
