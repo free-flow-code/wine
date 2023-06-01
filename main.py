@@ -38,8 +38,6 @@ def get_products(table_filename):
             'promotion': product['promotion']
         }
         sorted_products[key] += [features]
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(sorted_products)
     return sorted_products
 
 
