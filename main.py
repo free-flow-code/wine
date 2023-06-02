@@ -4,16 +4,8 @@ from dotenv import load_dotenv
 import os
 import datetime
 import pandas
-import pprint
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml'])
-)
-
-template = env.get_template('template.html')
 
 
 def get_products(table_filename):
@@ -59,19 +51,25 @@ def calculate_word(worktime):
         return 'лет'
 
 
-worktime = counting_years_from_founding()
-year_word = calculate_word(worktime)
-table_filename = os.getenv('TABLE_FILENAME', default='wine-example.xlsx')
-
-rendered_page = template.render(
-    products=get_products(table_filename),
-    worktime=worktime,
-    year_word=year_word
-)
-
-
 def main():
     load_dotenv()
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+
+    template = env.get_template('template.html')
+
+    worktime = counting_years_from_founding()
+    year_word = calculate_word(worktime)
+    table_filename = os.getenv('TABLE_FILENAME', default='wine-example.xlsx')
+
+    rendered_page = template.render(
+        products=get_products(table_filename),
+        worktime=worktime,
+        year_word=year_word
+    )
+
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
