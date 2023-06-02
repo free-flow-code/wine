@@ -33,7 +33,7 @@ def get_products(table_filename):
     return sorted_products
 
 
-def counting_years_from_founding():
+def calculate_years_from_founding():
     foundation_year = 1920
     year_now = datetime.datetime.now()
     return year_now.year - foundation_year
@@ -60,7 +60,7 @@ def main():
 
     template = env.get_template('template.html')
 
-    worktime = counting_years_from_founding()
+    worktime = calculate_years_from_founding()
     year_word = calculate_word(worktime)
     table_filename = os.getenv('TABLE_FILENAME', default='wine-example.xlsx')
 
